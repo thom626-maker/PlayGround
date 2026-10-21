@@ -1,0 +1,5 @@
+com.directchat.app:style/Theme.DirectChat = 0x7f040000
+com.directchat.app:string/app_name = 0x7f030000
+com.directchat.app:drawable/ic_launcher = 0x7f020000
+com.directchat.app:color/brand_dark = 0x7f010001
+com.directchat.app:color/brand = 0x7f010000

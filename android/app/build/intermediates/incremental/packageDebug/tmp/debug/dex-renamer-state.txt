@@ -1,0 +1,7 @@
+#Fri Oct 16 14:57:00 UTC 2026
+base.1=/home/runner/work/PlayGround/PlayGround/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/9/classes.dex
+path.1=9/classes.dex
+base.0=/home/runner/work/PlayGround/PlayGround/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+path.0=0/classes.dex
