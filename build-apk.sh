@@ -9,8 +9,8 @@ cp ./index.html ./android/app/src/main/assets/www/index.html
 ./android/gradlew -p ./android :app:assembleDebug --no-daemon
 
 mkdir -p ./release
-cp ./android/app/build/outputs/apk/debug/app-debug.apk ./direct-chat.apk
-cp ./android/app/build/outputs/apk/debug/app-debug.apk ./release/direct-chat.apk
+cp ./android/app/build/outputs/apk/debug/app-debug.apk ./TDirect-Chat-Universal.apk
+cp ./android/app/build/outputs/apk/debug/app-debug.apk ./release/TDirect-Chat-Universal.apk
 
 echo "APK ready:"
-ls -lh ./direct-chat.apk ./release/direct-chat.apk
+ls -lh ./TDirect-Chat-Universal.apk ./release/TDirect-Chat-Universal.apk

@@ -9,27 +9,34 @@
                         "startLines": "2",
                         "startColumns": "4",
                         "startOffsets": "55",
-                        "endLines": "6",
+                        "endLines": "8",
                         "endColumns": "12",
-                        "endOffsets": "357"
+                        "endOffsets": "474"
                     },
                     "to": {
-                        "startLines": "5",
+                        "startLines": "6",
                         "startColumns": "4",
-                        "startOffsets": "189",
-                        "endLines": "9",
+                        "startOffsets": "231",
+                        "endLines": "12",
                         "endColumns": "12",
-                        "endOffsets": "491"
+                        "endOffsets": "650"
                     }
                 },
                 {
                     "source": "/home/runner/work/PlayGround/PlayGround/android/app/src/main/res/values/colors.xml",
                     "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,95",
-                        "endColumns": "39,44",
-                        "endOffsets": "90,135"
+                        "startLines": "4,2,3",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "140,55,95",
+                        "endColumns": "40,39,44",
+                        "endOffsets": "176,90,135"
+                    },
+                    "to": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,96,136",
+                        "endColumns": "40,39,44",
+                        "endOffsets": "91,131,176"
                     }
                 },
                 {
@@ -38,15 +45,15 @@
                         "startLines": "2",
                         "startColumns": "4",
                         "startOffsets": "55",
-                        "endColumns": "48",
-                        "endOffsets": "99"
+                        "endColumns": "49",
+                        "endOffsets": "100"
                     },
                     "to": {
-                        "startLines": "4",
+                        "startLines": "5",
                         "startColumns": "4",
-                        "startOffsets": "140",
-                        "endColumns": "48",
-                        "endOffsets": "184"
+                        "startOffsets": "181",
+                        "endColumns": "49",
+                        "endOffsets": "226"
                     }
                 }
             ]

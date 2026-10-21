@@ -3,13 +3,23 @@ package com.directchat.app;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
+import android.view.WindowManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.webkit.WebChromeClient;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
     private WebView webView;
@@ -18,8 +28,23 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        webView = new WebView(this);
+        if (Build.VERSION.SDK_INT >= 35) {
+            Api35Impl.enable(this);
+        }
+
+        try {
+            webView = new WebView(this);
+        } catch (Throwable error) {
+            showWebViewError();
+            return;
+        }
+
+        webView.setBackgroundColor(Color.parseColor("#0B0F17"));
         setContentView(webView);
+
+        if (Build.VERSION.SDK_INT >= 35) {
+            Api35Impl.applyInsets(webView);
+        }
 
         WebSettings s = webView.getSettings();
         s.setJavaScriptEnabled(true);
@@ -49,10 +74,8 @@ public class MainActivity extends Activity {
                 String scheme = uri.getScheme() == null ? "" : uri.getScheme();
                 String url = uri.toString();
 
-                // Keep local app inside WebView
                 if (url.startsWith("file:///android_asset/")) return false;
 
-                // External messaging / dialer intents -> open outside WebView
                 String host = uri.getHost() == null ? "" : uri.getHost().toLowerCase();
                 boolean isWhatsApp = host.equals("wa.me") || host.endsWith(".wa.me")
                         || host.equals("api.whatsapp.com") || host.equals("whatsapp.com");
@@ -67,12 +90,7 @@ public class MainActivity extends Activity {
                     return true;
                 }
 
-                // All other http(s) links (e.g. shared links) also open externally
-                // so the user stays in the app shell.
                 if (scheme.equals("http") || scheme.equals("https")) {
-                    // Let page sub-resources load (they don't hit this for XHR/fetch),
-                    // but top-level navigations away from the local file go external.
-                    // Since our app is a single local file, any http(s) navigation is external.
                     openExternally(uri);
                     return true;
                 }
@@ -97,6 +115,18 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void showWebViewError() {
+        TextView message = new TextView(this);
+        message.setText("Não foi possível abrir o app.\n\nAtualize o Android System WebView pela Play Store e tente novamente.");
+        message.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        message.setTextColor(Color.WHITE);
+        message.setBackgroundColor(Color.parseColor("#0B0F17"));
+        message.setGravity(Gravity.CENTER);
+        int padding = (int) (24 * getResources().getDisplayMetrics().density);
+        message.setPadding(padding, padding, padding, padding);
+        setContentView(message);
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -119,5 +149,45 @@ public class MainActivity extends Activity {
             webView = null;
         }
         super.onDestroy();
+    }
+
+    /**
+     * Android 15 (API 35) enforces edge-to-edge when targetSdk is 35.
+     * This code is isolated in its own class so older Android versions
+     * never load the newer framework classes.
+     */
+    @android.annotation.TargetApi(35)
+    private static final class Api35Impl {
+        static void enable(Activity activity) {
+            Window window = activity.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+            window.setNavigationBarColor(Color.TRANSPARENT);
+            window.setDecorFitsSystemWindows(false);
+
+            WindowInsetsController controller = window.getInsetsController();
+            if (controller != null) {
+                controller.setSystemBarsAppearance(
+                        0,
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                                | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS);
+            }
+        }
+
+        static void applyInsets(View view) {
+            view.setOnApplyWindowInsetsListener((v, insets) -> {
+                android.graphics.Insets bars = insets.getInsets(
+                        WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+                android.graphics.Insets ime = insets.getInsets(WindowInsets.Type.ime());
+                int bottom = Math.max(bars.bottom, ime.bottom);
+
+                if (v.getPaddingLeft() != bars.left || v.getPaddingTop() != bars.top
+                        || v.getPaddingRight() != bars.right || v.getPaddingBottom() != bottom) {
+                    v.setPadding(bars.left, bars.top, bars.right, bottom);
+                }
+                return insets;
+            });
+            view.requestApplyInsets();
+        }
     }
 }
