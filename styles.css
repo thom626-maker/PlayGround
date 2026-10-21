@@ -1,0 +1,451 @@
+:root{
+  --neon:#00ff9d; --mag:#ff2fb3; --cyan:#00d5ff;
+  --black:#0b0b12; --light-black:#12121c; --card:#161624;
+  --grey:#9a9ab0; --sand:#d6d6e2; --white:#f2f2f7;
+  --line:#26263a; --radius:18px; --shadow:0 12px 40px rgba(0,255,157,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--black);color:var(--white);line-height:1.55}
+a{color:var(--grey);text-decoration:none}
+a:hover{color:var(--sand)}
+h1,h2,h3{line-height:1.05;margin:0 0 .5rem}
+button{font:inherit}
+.eyebrow{color:var(--neon);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem;margin:0 0 .5rem}
+.neon{color:var(--neon)}
+.sub{color:var(--grey)}
+.hint{font-size:.82rem;color:var(--grey)}
+.tribute-note{font-size:.78rem;color:var(--grey)}
+.section-title{text-transform:uppercase;color:var(--grey);letter-spacing:1.25px;font-size:.85rem;margin:1.4rem 0 .8rem;font-weight:800}
+.linklike{background:none;border:0;color:var(--neon);cursor:pointer;font-weight:800;padding:0;text-decoration:underline}
+
+/* ===== App shell ===== */
+.app{display:grid;grid-template-columns:220px 1fr 220px;grid-template-rows:1fr auto;grid-template-areas:"side main social" "player player player";min-height:100vh}
+.sidebar{grid-area:side;background:var(--light-black);border-right:1px solid var(--black);display:flex;flex-direction:column;min-height:0}
+.main-col{grid-area:main;min-width:0;display:flex;flex-direction:column}
+.social{grid-area:social;background:var(--light-black);border-left:1px solid var(--black);padding:15px;overflow-y:auto}
+.current-track{grid-area:player;position:sticky;bottom:0;z-index:30}
+
+/* ===== Sidebar ===== */
+.side-brand{display:flex;align-items:center;gap:.6rem;padding:15px;color:var(--white);font-weight:900;text-decoration:none}
+.brand-badge{font-family:monospace;font-weight:900;background:var(--neon);color:#06130c;border-radius:10px;padding:.3rem .5rem;font-size:.9rem}
+.navigation{padding:15px;overflow-y:auto;flex:1}
+.navigation__list{display:flex;flex-flow:column wrap;margin-bottom:15px}
+.navigation__list__header{font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;color:var(--grey);font-weight:800}
+.navigation__list__item{color:var(--grey);padding:5px 0;display:flex;flex-flow:row nowrap;align-items:center;gap:10px;text-decoration:none;border-right:3px solid transparent}
+.navigation__list__item:hover{color:var(--white);border-right-color:var(--neon)}
+.navigation__list__item.active{color:var(--white);border-right-color:var(--neon)}
+.ni{width:22px;text-align:center;color:var(--neon);font-style:normal}
+.playing{background:var(--light-black);border-top:1px solid var(--black);display:flex;flex-flow:row nowrap;align-items:center;padding:10px;gap:10px}
+.playing__art img{width:50px;height:50px;border-radius:8px;object-fit:cover;display:block}
+.playing__song{color:var(--grey);display:flex;flex-flow:column wrap;flex:1;min-width:0}
+.playing__song__name{color:var(--white);font-weight:700;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.playing__song__artist{font-size:.75rem}
+.playing__add{margin-left:auto;background:none;border:1px solid var(--grey);color:var(--grey);border-radius:50%;width:28px;height:28px;cursor:pointer}
+.playing__add:hover{color:var(--neon);border-color:var(--neon)}
+
+/* ===== Topbar ===== */
+.topbar{background:var(--light-black);padding:10px 15px;color:var(--grey);border-bottom:1px solid var(--black);display:flex;flex-flow:row wrap;align-items:center;gap:10px;position:sticky;top:0;z-index:20}
+.search{flex:1;min-width:180px}
+.search input{width:100%;max-width:420px;border-radius:15px;border:none;background:var(--white);color:var(--black);padding:8px 15px 8px 32px;outline:none;font:inherit}
+.topbar__actions{margin-left:auto;display:flex;gap:.6rem;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:0;border-radius:999px;padding:.85rem 1.5rem;font-weight:800;cursor:pointer;text-decoration:none;font-size:.95rem}
+.btn:active{transform:translateY(1px)}
+.btn-neon{background:var(--neon);color:#06130c}
+.btn-sub{background:#ff0000;color:#fff}
+.btn-ghost{background:#1c1c2a;border:2px solid var(--line);color:var(--white)}
+.sm{padding:.55rem 1rem;font-size:.85rem}
+.block{width:100%}
+.cart-btn{border:2px solid var(--line);background:#1c1c2a;color:#fff;border-radius:999px;padding:.55rem .9rem;font-weight:800;cursor:pointer}
+.cart-btn span{background:var(--neon);color:#06130c;border-radius:999px;padding:0 .45rem;margin-left:.3rem}
+.cart-btn:hover{border-color:var(--neon)}
+
+/* ===== Artist ===== */
+.content__middle{padding:0 0 2rem;min-width:0}
+.artist__header{border-bottom:1px solid var(--light-black);position:relative;background:linear-gradient(135deg,rgba(0,255,157,.14),rgba(255,47,179,.12)),var(--black);overflow:hidden;display:flex;flex-flow:row wrap;justify-content:space-between;align-items:flex-end;min-height:280px;padding-top:30px}
+.artist__info{padding:15px;z-index:1;width:75%;display:flex;flex-flow:row wrap;align-items:flex-end;gap:15px}
+.profile__img img{width:130px;height:130px;border-radius:50%;object-fit:cover;border:3px solid var(--neon);position:relative}
+.is-verified .profile__img{position:relative}
+.is-verified .profile__img:after{content:"✓";position:absolute;bottom:8px;right:18px;color:#fff;background:#4688d7;width:22px;height:22px;border-radius:50%;text-align:center;font-size:15px;line-height:22px}
+.artist__info__type{color:var(--grey);text-transform:uppercase;font-size:11px;letter-spacing:1px}
+.artist__info__name{color:var(--white);font-size:36px;font-weight:100}
+.artist__info__actions{display:flex;flex-flow:row wrap;gap:10px;margin-top:8px}
+.artist__listeners{width:22%;z-index:1;padding:15px;text-align:right;color:var(--grey);font-weight:100;font-size:16px}
+.artist__listeners__label{font-weight:300;text-transform:uppercase;font-size:12px;letter-spacing:1px}
+.artist__navigation{width:100%;z-index:1;background:rgba(11,11,18,.75);display:flex}
+.artist__navigation ul{border:none;display:flex;list-style:none;margin:0;padding:0}
+.artist__navigation li button{background:none;border:0;padding:12px 15px;color:var(--grey);text-transform:uppercase;letter-spacing:1px;cursor:pointer;border-bottom:4px solid transparent;font-size:.8rem;font-weight:700}
+.artist__navigation li button:hover{color:var(--white)}
+.artist__navigation li.active button{color:var(--white);border-bottom-color:var(--neon)}
+.artist__content{padding:15px}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* ===== Overview / releases / rows ===== */
+.overview{display:flex;flex-flow:row wrap}
+.overview__artist{padding-right:15px;width:68%}
+.overview__related{width:32%}
+.latest-release{margin-bottom:30px;display:flex;flex-flow:row wrap}
+.latest-release__art img{width:75px;height:75px;border-radius:8px;object-fit:cover;display:block}
+.latest-release__song{width:calc(100% - 75px);padding:10px 15px;background:var(--light-black);color:var(--grey);display:flex;flex-flow:column wrap;justify-content:center;gap:4px}
+.latest-release__song__title{color:var(--sand);font-weight:700}
+.latest-release__song__meta{font-size:.8rem}
+.show-more{margin-top:.6rem}
+.button-dark{background:var(--neon);color:#06130c;border:1px solid var(--neon);border-radius:20px;padding:5px 18px;text-transform:uppercase;letter-spacing:1px;font-size:11px;cursor:pointer;font-weight:800}
+.button-light{background:none;color:var(--sand);border:1px solid var(--sand);border-radius:20px;padding:5px 18px;text-transform:uppercase;letter-spacing:1px;font-size:11px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.button-light:hover{border-color:var(--white);color:var(--white)}
+.button-light.more{border-radius:50%;width:27px;height:27px;padding:0;justify-content:center}
+
+.tracks{display:flex;flex-flow:column wrap;margin-bottom:15px}
+.track{border-top:1px solid var(--light-black);min-height:52px;display:flex;flex-flow:row wrap;align-items:center;gap:12px;padding:5px 0;width:100%;background:none;border-left:0;border-right:0;border-bottom:0;color:var(--white);text-align:left;cursor:pointer;font:inherit}
+.track:hover{background:var(--light-black)}
+.track:last-child{border-bottom:1px solid var(--light-black)}
+.track__art img{width:42px;height:42px;border-radius:6px;object-fit:cover;display:block}
+.track__number{color:var(--grey);width:20px;font-size:.85rem}
+.track__title{flex:1;min-width:140px;font-weight:600}
+.track__title small{display:block;color:var(--grey);font-weight:400;font-size:.75rem}
+.track__cat{font-size:.7rem;color:var(--neon);text-transform:uppercase;letter-spacing:1px}
+.track__length{margin-left:auto;color:var(--grey);font-size:.85rem;font-variant-numeric:tabular-nums}
+.track__queue{background:none;border:1px solid var(--grey);color:var(--grey);border-radius:999px;padding:.2rem .7rem;font-size:.75rem;cursor:pointer}
+.track__queue:hover{border-color:var(--neon);color:var(--neon)}
+.track.playing{background:rgba(0,255,157,.07)}
+.track.playing .track__title{color:var(--neon)}
+
+.related-artists{display:flex;flex-flow:column wrap;gap:2px}
+.related-artist{background:var(--light-black);padding:5px;margin-bottom:2px;display:flex;align-items:center;gap:12px;color:var(--white);border:0;width:100%;cursor:pointer;font:inherit;text-align:left}
+.related-artist:hover{background:#1e1e2e}
+.related-artist img{width:42px;height:42px;border-radius:50%;object-fit:cover}
+.pl-ext{width:42px;height:42px;border-radius:50%;background:#1c1c2a;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--neon);flex:none}
+.related-artist__count{margin-left:auto;color:var(--grey);font-size:.75rem}
+
+/* ===== Albums ===== */
+.overview__albums{width:100%;margin-top:15px}
+.overview__albums__head{border-bottom:1px solid var(--light-black);margin-bottom:10px}
+.album{margin-bottom:30px}
+.album__info{margin-bottom:15px;display:flex;flex-flow:row wrap;gap:15px;align-items:center}
+.album__info__art img{width:135px;height:135px;border-radius:12px;object-fit:cover}
+.album__year{color:var(--grey);letter-spacing:1px;font-size:.8rem}
+.album__name{color:var(--white);font-size:30px;font-weight:100}
+.album__count{color:var(--grey);font-size:.85rem}
+
+/* ===== Now spinning deck ===== */
+.player-wrap{display:grid;grid-template-columns:minmax(220px,.9fr) 1.1fr;gap:1.2rem;background:var(--light-black);border:1px solid var(--line);border-radius:14px;padding:1.2rem;position:relative}
+.deck-art{position:relative;border-radius:10px;overflow:hidden;cursor:pointer;min-height:230px;background:#000}
+.deck-video{position:absolute;inset:0;z-index:1;visibility:hidden}
+.deck-video iframe{width:100%;height:100%;border:0}
+.deck-video.show-video{z-index:3;visibility:visible}
+.deck-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.deck-art img.art-hidden{display:none}
+.deck-glyph{position:absolute;right:.8rem;bottom:.8rem;width:52px;height:52px;border-radius:50%;background:rgba(0,0,0,.65);border:2px solid var(--neon);color:var(--neon);display:flex;align-items:center;justify-content:center;font-size:1.2rem;z-index:4}
+.deck-main{display:flex;flex-direction:column;justify-content:center;gap:.3rem;min-width:0}
+.deck-main h3{font-size:1.4rem;margin:0}
+.progress{position:relative;height:8px;background:#2a2a3d;border-radius:999px;cursor:pointer;margin-top:.7rem;touch-action:none}
+.progress-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--neon);border-radius:999px}
+.cta-row{display:flex;gap:.7rem;flex-wrap:wrap;margin:.8rem 0}
+.track-tools{margin-bottom:.6rem}
+.tabs{display:flex;gap:.5rem;flex-wrap:wrap}
+.tab{border:1px solid var(--sand);background:none;color:var(--sand);border-radius:20px;padding:.35rem 1rem;font-size:.75rem;text-transform:uppercase;letter-spacing:1px;cursor:pointer}
+.tab.active{background:var(--neon);border-color:var(--neon);color:#06130c}
+
+/* ===== About / collab ===== */
+.about-inner{display:grid;grid-template-columns:1.2fr .8fr;gap:1.5rem;background:var(--light-black);border:1px solid var(--neon);border-radius:14px;padding:1.5rem;margin-top:1.5rem}
+.about-inner h2{font-size:1.8rem}
+.values{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin:1rem 0}
+.values div{background:#0e0e18;border:1px solid var(--line);border-radius:10px;padding:.7rem}
+.values strong{display:block;color:var(--neon)}.values span{font-size:.8rem;color:var(--grey)}
+.about-art{display:grid;gap:.6rem}
+.about-art img{width:100%;height:190px;object-fit:cover;border-radius:10px}
+.contact-inner{display:grid;grid-template-columns:1.2fr .8fr;gap:1.5rem;background:var(--light-black);border:1px solid var(--mag);border-radius:14px;padding:1.5rem;margin-top:1.5rem}
+.contact-inner h2{font-size:1.8rem}
+.contact-form{display:grid;gap:.6rem;margin-top:1rem}
+.contact-form input,.contact-form select,.contact-form textarea{border:1px solid var(--line);border-radius:10px;padding:.7rem .9rem;font:inherit;background:#0e0e18;color:var(--white);width:100%}
+.contact-card{background:#0e0e18;border:1px solid var(--line);border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem}
+
+/* ===== Right column ===== */
+.social .friends{display:flex;flex-flow:column wrap;margin-bottom:15px;gap:2px}
+.social .friend{padding:8px 4px;display:flex;gap:8px;align-items:center;color:var(--grey);background:none;border:0;width:100%;text-align:left;cursor:pointer;font:inherit;font-size:.85rem}
+.social a.friend:hover,.social button.friend:hover{color:var(--white)}
+.social .friend img{width:34px;height:34px;border-radius:6px;object-fit:cover}
+.social .friend span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.empty{color:var(--grey);padding:1rem;font-size:.85rem}
+
+/* ===== Now Playing shelf (slides up from the bottom) ===== */
+.shelf{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;justify-content:center;pointer-events:none;transform:translateY(105%);transition:transform .28s ease}
+.shelf.open{transform:none}
+.shelf-inner{pointer-events:auto;width:min(920px,94vw);max-height:62vh;overflow:auto;margin-bottom:76px;box-shadow:0 -12px 60px rgba(0,0,0,.6);position:relative}
+.shelf-close{position:absolute;top:.6rem;right:.6rem;z-index:5;background:#1c1c2a;border:2px solid var(--line);color:var(--white);border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:.85rem}
+.shelf-close:hover{border-color:var(--neon);color:var(--neon)}
+
+/* ===== Bottom player bar: one row, tiny progress pinned to bottom edge ===== */
+.current-track{background:var(--light-black);padding:6px 12px 9px;display:flex;flex-flow:row nowrap;align-items:center;gap:10px;border-top:1px solid var(--black);position:sticky;bottom:0;z-index:30;min-height:64px}
+.shelf-toggle{background:#1c1c2a;border:2px solid var(--line);color:var(--neon);border-radius:50%;width:32px;height:32px;cursor:pointer;flex:none;font-size:.8rem}
+.shelf-toggle:hover{border-color:var(--neon)}
+.current-track__art img{width:44px;height:44px;border-radius:8px;object-fit:cover;display:block}
+.current-track__actions{display:flex;flex-flow:row nowrap;align-items:center;gap:2px;flex:none}
+.current-track__actions button{background:none;border:0;font-size:18px;color:var(--sand);cursor:pointer;padding:.2rem .4rem}
+.current-track__actions button:hover{color:var(--white)}
+.current-track__actions .play{font-size:30px;color:var(--white)}
+.current-track__progress{flex:1;min-width:0;display:flex;flex-flow:row nowrap;align-items:center;gap:10px;color:var(--grey);font-size:11px;font-variant-numeric:tabular-nums}
+.current-track__progress__title{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--sand);font-size:.85rem}
+.current-track__options{display:flex;flex-flow:row nowrap;align-items:center;flex:none}
+.edge-progress{position:absolute;left:0;right:0;bottom:0;height:4px;background:#2a2a3d;cursor:pointer;touch-action:none}
+.edge-progress .progress-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--neon)}
+.edge-progress:hover{height:7px}
+.controls{display:flex;gap:4px}
+.control{background:none;border:0;color:var(--grey);font-size:17px;cursor:pointer;border-radius:8px;padding:.2rem .5rem}
+.control:hover{color:var(--white)}
+.control.on{color:var(--neon)}
+
+/* ===== Drawer / modal / toast ===== */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}
+.overlay[hidden],.checkout-modal[hidden]{display:none!important}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(400px,92vw);background:var(--light-black);z-index:70;box-shadow:-20px 0 60px rgba(0,0,0,.5);display:flex;flex-direction:column;transform:translateX(105%);transition:transform .22s ease;border-left:3px solid var(--neon)}
+.drawer.open{transform:none}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.1rem;border-bottom:1px solid var(--black)}
+.drawer-head button{border:0;background:#26263a;color:#fff;border-radius:10px;padding:.4rem .6rem;cursor:pointer}
+.drawer-sub{padding:.5rem 1.1rem;color:var(--grey);font-size:.82rem;margin:0}
+.drawer-items{flex:1;overflow:auto;padding:.5rem 1.1rem;display:flex;flex-direction:column;gap:.6rem}
+.cart-row{display:flex;align-items:center;gap:.6rem;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.5rem}
+.cart-thumb{width:42px;height:42px;object-fit:cover;border-radius:8px;flex:none}
+.cart-row div{flex:1;min-width:0}.cart-row strong{font-size:.85rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cart-row span{font-size:.75rem;color:var(--grey)}
+.qty{display:flex;align-items:center;gap:.4rem}
+.qty button{border:1px solid var(--line);background:var(--light-black);color:var(--white);border-radius:8px;min-width:34px;height:30px;cursor:pointer;font-size:.75rem}
+.drawer-foot{padding:1rem 1.1rem;border-top:1px solid var(--black);display:grid;gap:.5rem}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--neon);color:#06130c;padding:.7rem 1.1rem;border-radius:999px;font-weight:800;opacity:0;pointer-events:none;transition:.2s;z-index:80}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.checkout-modal{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.7);padding:1rem}
+.modal-card{background:var(--card);border-radius:14px;padding:1.8rem;max-width:420px;text-align:center;border:2px solid var(--neon);color:var(--white)}
+.foot-base{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.8rem;color:var(--grey);padding:1.2rem 15px}
+
+/* ===== Responsive ===== */
+@media (max-width: 1400px){
+  .app{grid-template-columns:200px 1fr;grid-template-areas:"side main" "player player"}
+  .social{display:none}
+  .overview__artist{width:100%;padding-right:0}
+  .overview__related{width:100%;margin-top:1rem}
+}
+@media (max-width: 900px){
+  .app{grid-template-columns:1fr;grid-template-areas:"main" "player"}
+  .sidebar{display:none}
+  .about-inner,.contact-inner,.player-wrap{grid-template-columns:1fr}
+  .artist__info{width:100%}
+  .artist__listeners{width:100%;text-align:left}
+  .current-track{gap:6px;padding:6px 8px 9px}
+  .current-track__progress__start,.current-track__progress__finish{display:none}
+  .shelf-inner{margin-bottom:70px}
+}
+
+/* ===== Twin edge particle-flames (fixed side strips, behind content) ===== */
+canvas.flame{
+  position:fixed;bottom:0;height:100vh;width:200px;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 90% 45% at 50% 100%,rgba(255,70,0,.18),rgba(255,0,0,.07) 45%,rgba(0,0,0,0) 70%);
+}
+/* NOTE: the source effect's `@explore keyframes fade-in2` typo is corrected
+   below; the fade itself is intentionally not applied so the flames render at
+   full opacity immediately (reliable first paint + headless verification). */
+#flameLeft{left:0}
+#flameRight{right:0}
+@keyframes fade-in2{from{opacity:0}to{opacity:1}}
+/* App shell paints above the flames (own stacking context). The edge rails
+   and cards use transparent fills so the fire shows through from behind;
+   all text and controls stay fully opaque above the flames. */
+.app{position:relative;z-index:1}
+.sidebar,.social{background:transparent}
+.playing{background:transparent}
+/* Translucent cards so the edge flames glow through from behind (text stays
+   fully opaque above them). */
+.related-artist{background:transparent}
+.related-artist:hover{background:rgba(30,30,46,.7)}
+/* ===== Animated draw-on frame borders (pure CSS clip-path, no jQuery) =====
+   Two overlay layers trace the panel edges in opposite directions: the top
+   layer draws top→right→bottom→left, the bottom layer draws the reverse.
+   Percentage-based insets keep it resolution-independent (the source's own
+   caveat about px clip rects). Pointer-transparent; decorative only. */
+.frame-top,.frame-bottom{position:absolute;inset:2px;border:2px solid #5db8ff;border-radius:12px;pointer-events:none;z-index:6}
+.frame-top{animation:frame-draw-top 4s linear infinite}
+.frame-bottom{animation:frame-draw-bottom 4s linear infinite}
+@keyframes frame-draw-top{
+  0%{clip-path:inset(0 100% 100% 0);opacity:1}
+  20%{clip-path:inset(0 0 calc(100% - 2px) 0);opacity:1}
+  40%{clip-path:inset(0 0 0 calc(100% - 2px));opacity:1}
+  60%{clip-path:inset(0 2px 0 0);opacity:1}
+  80%{clip-path:inset(0 0 0 0);opacity:1}
+  92%{clip-path:inset(0 0 0 0);opacity:0}
+  100%{clip-path:inset(0 100% 100% 0);opacity:0}
+}
+@keyframes frame-draw-bottom{
+  0%{clip-path:inset(100% 0 0 100%);opacity:1}
+  20%{clip-path:inset(calc(100% - 2px) 0 0 0);opacity:1}
+  40%{clip-path:inset(0 calc(100% - 2px) 0 0);opacity:1}
+  60%{clip-path:inset(0 0 0 2px);opacity:1}
+  80%{clip-path:inset(0 0 0 0);opacity:1}
+  92%{clip-path:inset(0 0 0 0);opacity:0}
+  100%{clip-path:inset(100% 0 0 100%);opacity:0}
+}
+
+/* ===== Purple blob ring for artwork + players (morph only, no hotlinks) =====
+   Organic morphing border-radius + slow purple gradient sweep. The artwork
+   itself stays a plain <img> (its own thumbnail) inheriting the morph. */
+.blob-purple{background:linear-gradient(120deg,#2e1065,#6d28d9,#a855f7,#e9d5ff,#a855f7,#6d28d9,#2e1065);background-size:500% 100%;animation:blobber 30s linear infinite,blob-sweep 30s linear infinite alternate;padding:5px}
+.blob-purple>img{display:block;object-fit:cover;border-radius:inherit}
+@keyframes blobber{
+  0%{border-radius:48% 52% 68% 32% / 42% 28% 72% 58%}
+  5%{border-radius:48% 52% 41% 59% / 66% 37% 63% 34%}
+  10%{border-radius:69% 31% 71% 29% / 67% 31% 69% 33%}
+  15%{border-radius:60% 40% 71% 29% / 63% 65% 35% 37%}
+  20%{border-radius:61% 39% 51% 49% / 57% 58% 42% 43%}
+  25%{border-radius:66% 34% 25% 75% / 47% 30% 70% 53%}
+  30%{border-radius:32% 68% 38% 62% / 65% 60% 40% 35%}
+  35%{border-radius:63% 37% 41% 59% / 35% 38% 62% 65%}
+  40%{border-radius:57% 43% 49% 51% / 55% 71% 29% 45%}
+  45%{border-radius:47% 53% 34% 66% / 65% 36% 64% 35%}
+  50%{border-radius:44% 56% 32% 68% / 69% 26% 74% 31%}
+  55%{border-radius:28% 72% 37% 63% / 71% 44% 56% 29%}
+  60%{border-radius:38% 62% 35% 65% / 74% 53% 47% 26%}
+  65%{border-radius:73% 27% 46% 54% / 54% 47% 53% 46%}
+  70%{border-radius:75% 25% 47% 53% / 49% 53% 47% 51%}
+  75%{border-radius:62% 38% 43% 57% / 55% 60% 40% 45%}
+  80%{border-radius:41% 59% 65% 35% / 73% 50% 50% 27%}
+  85%{border-radius:55% 45% 57% 43% / 73% 61% 39% 27%}
+  90%{border-radius:74% 26% 33% 67% / 40% 65% 35% 60%}
+  95%{border-radius:58% 42% 57% 43% / 53% 45% 55% 47%}
+  100%{border-radius:48% 52% 68% 32% / 42% 28% 72% 58%}
+}
+@keyframes blob-sweep{0%{background-position:0% 0}100%{background-position:100% 0}}
+/* Deck-art blob wrapper fills the art box; hidden cleanly in reveal mode. */
+.deck-blob{position:absolute;inset:0;z-index:2;padding:0}
+.deck-blob>img{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px)}
+.deck-art.revealed .blob-purple{background:transparent;animation:none}
+.profile__img.blob-purple img{border-radius:inherit}
+.latest-release__art.blob-purple{padding:4px}
+.latest-release__art.blob-purple img{border-radius:inherit}
+.album__info__art.blob-purple{padding:4px}
+.album__info__art.blob-purple img{border-radius:inherit}
+.about-blob{display:block}
+.about-blob>img{width:100%;height:190px;border-radius:inherit}
+@media (prefers-reduced-motion: reduce){
+  .frame-top,.frame-bottom{animation:none;clip-path:none;opacity:1}
+  .blob-purple,.blob-purple>img{animation:none}
+}
+
+/* ===== Background lightning storm (behind everything, never over text) ===== */
+#storm1,#storm2,#storm3{
+  position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:0;
+}
+.storm-flash{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-color:rgba(0,0,0,.5);
+  animation:thunder-bg 6s infinite;
+}
+/* Thunder flash timing (flattened from the source SCSS): brief light pulses
+   against an otherwise dark veil. Paints UNDER the app shell, so text and
+   controls are never covered. */
+@keyframes thunder-bg{
+  0%{background-color:rgba(0,0,0,.5)}
+  9%{background-color:rgba(0,0,0,.5)}
+  10%{background-color:rgba(140,150,190,.16)}
+  10.5%{background-color:rgba(0,0,0,.5)}
+  80%{background-color:rgba(0,0,0,.5)}
+  82%{background-color:rgba(140,150,190,.12)}
+  83%{background-color:rgba(0,0,0,.5)}
+  83.5%{background-color:rgba(140,150,190,.18)}
+  100%{background-color:rgba(0,0,0,.5)}
+}
+
+/* ===== Accent themes / likes / fx toggle ===== */
+[data-theme="violet"]{--neon:#b388ff;--mag:#ff4fd8;--cyan:#8fd0ff}
+[data-theme="cyan"]{--neon:#22d3ee;--mag:#f472b6;--cyan:#67e8f9}
+.themes{display:flex;gap:.6rem;padding:6px 0 6px 2px}
+.theme-dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);background:#00ff9d;cursor:pointer;padding:0}
+.theme-dot.violet{background:#b388ff}
+.theme-dot.cyan{background:#22d3ee}
+.theme-dot.on{border-color:#fff;box-shadow:0 0 0 2px var(--neon)}
+.track__heart{background:none;border:0;color:var(--grey);font-size:1rem;cursor:pointer;padding:.2rem .3rem;line-height:1}
+.track__heart:hover{color:var(--mag)}
+.track__heart.on{color:var(--mag)}
+.control.off{opacity:.35}
+.fx-off canvas.flame,.fx-off #storm1,.fx-off #storm2,.fx-off #storm3,.fx-off .storm-flash,.fx-off .parallax{display:none!important}
+
+/* ===== Player-hub 3D + motion ===== */
+.deck-art{transform-style:preserve-3d;will-change:transform}
+.deck-glare{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;transition:opacity .3s;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.16) 46%,transparent 62%)}
+@keyframes art-swap{0%{filter:brightness(1)}35%{filter:brightness(1.7) saturate(1.2)}100%{filter:brightness(1)}}
+.deck-art.swap{animation:art-swap .45s ease}
+.mini-vinyl{width:58px;height:58px;border-radius:50%;flex:none;position:relative;background:repeating-radial-gradient(circle at 50% 50%,#0a0a0a 0 2px,#1c1c1c 2px 4px);border:2px solid #2a2a3a;box-shadow:0 0 18px rgba(0,255,157,.25);animation:vinyl-spin 7s linear infinite;animation-play-state:paused}
+.mini-vinyl::after{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 40deg,rgba(255,255,255,.13) 52deg,transparent 70deg)}
+.mini-vinyl img{position:absolute;inset:17px;width:22px;height:22px;border-radius:50%;object-fit:cover}
+.shelf.is-playing .mini-vinyl{animation-play-state:running}
+@keyframes vinyl-spin{to{transform:rotate(360deg)}}
+.shelf{transform:perspective(1400px) rotateX(-7deg) translateY(105%);transition:transform .38s cubic-bezier(.2,.7,.2,1)}
+.shelf.open{transform:perspective(1400px) rotateX(0deg) translateY(0)}
+.eq{display:flex;align-items:flex-end;gap:3px;height:22px}
+.eq span{width:4px;background:var(--neon);border-radius:2px;height:25%;animation:eq-b .9s ease-in-out infinite;animation-play-state:paused}
+.eq span:nth-child(2){animation-delay:.15s}
+.eq span:nth-child(3){animation-delay:.3s}
+.eq span:nth-child(4){animation-delay:.45s}
+body.is-playing .eq span{animation-play-state:running}
+@keyframes eq-b{0%,100%{height:22%}50%{height:100%}}
+body.rows-anim .track{animation:row-in .45s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i,0)*14ms)}
+@keyframes row-in{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){
+  .mini-vinyl,.eq span,.deck-art.swap{animation:none}
+  body.rows-anim .track{animation:none}
+  /* Keep open/close working: same transforms, just no slide animation. */
+  .shelf{transition:none}
+  #pxStars .star,.moon-halo,.cloud,.spirit,.blade{animation:none}
+}
+/* ===== Idle-disco dancers (perched on the bar + shelf, never over text) ===== */
+.shelf-inner{position:relative}
+.dancer{position:absolute;pointer-events:none;z-index:5;image-rendering:pixelated;opacity:0;transform:translateY(10px) scale(.6);transition:opacity .4s ease,transform .4s cubic-bezier(.2,.7,.2,1.4)}
+.dancer.show{opacity:1;transform:none}
+.dancer.dance{animation:dancer-hop .5s ease-in-out infinite alternate}
+@keyframes dancer-hop{from{margin-bottom:0}to{margin-bottom:12px}}
+#barDancer{bottom:100%;right:84px;height:64px}
+/* Shelf dancer is position:fixed (JS-pinned above the panel) so the panel's
+   overflow:auto can never clip it. Coordinates set by repositionShelfDancer. */
+#shelfDancer{position:fixed;height:96px;left:0;top:0}
+.fx-off .dancer{display:none!important}
+.dropzone{border:2px dashed var(--line);border-radius:12px;padding:1.2rem;text-align:center;color:var(--grey);cursor:pointer;font-weight:700}
+.dropzone:hover,.dropzone.over{border-color:var(--neon);color:var(--neon)}
+.dropzone input{pointer-events:none}
+@media (prefers-reduced-motion: reduce){.dancer{transition:none}.dancer.dance{animation:none}}
+
+/* ===== Parallax night forest (deepest background layer) ===== */
+.parallax{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.parallax svg{width:100vw;height:100vh;display:block}
+#parallax [data-depth]{will-change:transform}
+#pxStars .star{animation:star-twinkle 3s ease-in-out infinite alternate}
+@keyframes star-twinkle{from{opacity:.25}to{opacity:.95}}
+.moon-halo{animation:halo-pulse 7s ease-in-out infinite alternate;transform-origin:1230px 190px}
+@keyframes halo-pulse{from{opacity:.7;transform:scale(1)}to{opacity:1;transform:scale(1.08)}}
+.cloud{animation:cloud-drift 70s ease-in-out infinite alternate}
+.cloud.c2{animation-duration:95s}
+.cloud.c3{animation-duration:55s}
+@keyframes cloud-drift{from{transform:translateX(-46px)}to{transform:translateX(46px)}}
+.spirit{animation:spirit-bob 3.4s ease-in-out infinite alternate;animation-delay:var(--d,0s)}
+@keyframes spirit-bob{from{transform:translateY(0)}to{transform:translateY(-9px)}}
+.blade{animation:blade-sway 5s ease-in-out infinite alternate;animation-delay:var(--d,0s);transform-box:fill-box;transform-origin:50% 100%}
+@keyframes blade-sway{from{transform:rotate(-4deg)}to{transform:rotate(5deg)}}
+
+/* ===== Scroll-reveal + transitional polish ===== */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.08s}
+.reveal[data-d="2"]{transition-delay:.16s}
+.reveal[data-d="3"]{transition-delay:.24s}
+.reveal[data-d="4"]{transition-delay:.32s}
+.tab-pane.active{animation:pane-in .35s ease}
+@keyframes pane-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.artist__header{animation:head-in .6s ease both}
+@keyframes head-in{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+.sidebar{animation:side-in .5s ease both}
+@keyframes side-in{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+.track{transition:background .2s ease,transform .2s ease}
+.track:hover{transform:translateX(4px)}
+.related-artist,.plink,.navigation__list__item{transition:background .2s ease,color .2s ease,transform .2s ease}
+@media (prefers-reduced-motion: reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .tab-pane.active,.artist__header,.sidebar{animation:none}
+  .track:hover{transform:none}
+  #pxStars .star,.moon-halo,.cloud,.spirit,.blade{animation:none}
+}
