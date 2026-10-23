@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="mirage_bg">#050308</color>
+    <color name="mirage_bar">#040208</color>
+    <color name="mirage_accent">#A855F7</color>
+    <color name="ic_launcher_background">#08050E</color>
+</resources>

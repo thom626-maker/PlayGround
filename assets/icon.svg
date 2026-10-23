@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b0b33"/>
+      <stop offset=".45" stop-color="#0a0514"/>
+      <stop offset="1" stop-color="#000000"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e9d5ff"/>
+      <stop offset=".35" stop-color="#a855f7"/>
+      <stop offset=".7" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="46%" r="52%">
+      <stop offset="0" stop-color="#a855f7" stop-opacity=".55"/>
+      <stop offset=".55" stop-color="#7c3aed" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#a855f7" stroke-opacity=".06" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="512" height="512" rx="116" fill="url(#bg)"/>
+  <rect width="512" height="512" rx="116" fill="url(#grid)"/>
+  <circle cx="256" cy="244" r="196" fill="url(#halo)"/>
+  <rect x="10" y="10" width="492" height="492" rx="108" fill="none" stroke="url(#neon)" stroke-opacity=".38" stroke-width="3"/>
+
+  <g transform="translate(256 258) scale(1.06) translate(-256 -258)">
+    <!-- aura -->
+    <path d="M132 452C118 408 122 358 148 324L128 276L168 300L158 236L198 282C216 272 236 266 258 264C300 258 330 270 356 288L420 300C446 302 464 310 472 322C476 328 474 334 466 338L438 344L458 354C466 360 462 370 450 374C430 380 404 380 382 376L362 394L342 376L326 412L300 380L278 420L252 386L224 426L204 392L178 430C168 444 156 452 144 456Z" fill="none" stroke="url(#neon)" stroke-width="14" stroke-linejoin="round" opacity=".55" filter="url(#soft)"/>
+
+    <!-- horns back -->
+    <path d="M160 300C126 262 96 226 58 200C88 228 106 260 116 296Z" fill="#0b0714" stroke="url(#neon)" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M190 288C172 238 148 198 112 168C142 204 158 242 166 286Z" fill="#0b0714" stroke="url(#neon)" stroke-width="7" stroke-linejoin="round"/>
+
+    <!-- neck spikes -->
+    <path d="M146 334L112 330L140 356Z" fill="#0b0714" stroke="url(#neon)" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M138 374L100 372L132 398Z" fill="#0b0714" stroke="url(#neon)" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M142 412L108 418L140 438Z" fill="#0b0714" stroke="url(#neon)" stroke-width="6" stroke-linejoin="round"/>
+
+    <!-- head -->
+    <path d="M132 452C126 412 128 372 140 340L148 324L168 300C216 272 300 258 356 288L420 300C446 302 464 310 472 322C476 328 474 334 466 338L438 344L458 354C466 360 462 370 450 374C430 380 404 380 382 376C352 392 330 420 318 456C308 486 280 500 250 492C214 482 184 462 166 434C154 416 144 392 140 368C136 398 132 430 132 452Z" fill="#0a0612" stroke="url(#neon)" stroke-width="9" stroke-linejoin="round"/>
+
+    <!-- brow -->
+    <path d="M304 292C326 282 352 284 372 296" fill="none" stroke="#c084fc" stroke-opacity=".5" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- eye -->
+    <path d="M318 309C336 294 362 296 378 311C360 326 336 326 318 309Z" fill="#c084fc" filter="url(#glow)"/>
+    <path d="M330 309C342 304 356 305 366 311C354 316 342 315 330 309Z" fill="#180625"/>
+    <circle cx="341" cy="309" r="3.6" fill="#f5f3ff"/>
+
+    <!-- nostril -->
+    <path d="M438 318C446 314 454 316 458 322C450 326 442 324 438 318Z" fill="#a855f7" opacity=".9"/>
+
+    <!-- mouth line -->
+    <path d="M382 376C404 380 430 380 450 374" fill="none" stroke="#22d3ee" stroke-opacity=".55" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- teeth -->
+    <path d="M392 346L402 366L410 348Z" fill="#e9d5ff"/>
+    <path d="M420 350L430 370L438 352Z" fill="#e9d5ff"/>
+    <path d="M354 370L364 390L374 372Z" fill="#e9d5ff"/>
+
+    <!-- scales -->
+    <g fill="none" stroke="#a855f7" stroke-opacity=".35" stroke-width="3" stroke-linecap="round">
+      <path d="M204 350C218 342 234 338 250 338"/>
+      <path d="M196 378C212 368 230 364 248 364"/>
+      <path d="M190 406C206 396 224 392 242 392"/>
+      <path d="M262 328C274 320 288 316 302 316"/>
+      <path d="M250 360C264 350 280 346 296 346"/>
+    </g>
+
+    <!-- jaw accent -->
+    <path d="M204 392C228 402 250 406 274 404C292 402 308 396 320 388" fill="none" stroke="#22d3ee" stroke-opacity=".35" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+</svg>

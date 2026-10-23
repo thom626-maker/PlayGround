@@ -1,0 +1,21 @@
+{
+  "name": "Mirage City",
+  "short_name": "Mirage",
+  "description": "Fã de músicas, rock e gamer!",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#050308",
+  "theme_color": "#07040d",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["music", "games", "social"],
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
