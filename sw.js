@@ -1,5 +1,5 @@
 "use strict";
-const CACHE = "mirage-city-v4";
+const CACHE = "mirage-city-v7";
 const CORE = [
   "./",
   "./index.html",
@@ -26,29 +26,37 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();
+});
+
+async function networkFirst(request) {
+  const cache = await caches.open(CACHE);
+  try {
+    const response = await fetch(request, { cache: "no-cache" });
+    if (response && response.ok) {
+      cache.put(request, response.clone()).catch(() => {});
+      if (request.mode === "navigate") {
+        cache.put("./index.html", response.clone()).catch(() => {});
+      }
+    }
+    return response;
+  } catch (error) {
+    const cached = await cache.match(request, {
+      ignoreSearch: request.mode === "navigate",
+    });
+    if (cached) return cached;
+    if (request.mode === "navigate") {
+      return (await cache.match("./index.html")) || (await cache.match("./")) || Response.error();
+    }
+    throw error;
+  }
+}
+
 self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET") return;
   const url = new URL(request.url);
   if (url.origin !== location.origin) return;
-
-  if (request.mode === "navigate") {
-    event.respondWith(
-      fetch(request).catch(() => caches.match("./index.html").then((hit) => hit || caches.match("./")))
-    );
-    return;
-  }
-
-  event.respondWith(
-    caches.match(request).then((hit) => {
-      if (hit) return hit;
-      return fetch(request).then((response) => {
-        if (response && response.ok) {
-          const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put(request, copy)).catch(() => {});
-        }
-        return response;
-      });
-    })
-  );
+  event.respondWith(networkFirst(request));
 });

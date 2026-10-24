@@ -23,6 +23,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.ValueCallback;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -31,8 +32,10 @@ public class MainActivity extends Activity {
     private static final String START_URL = "file:///android_asset/www/index.html";
     private static final String BRIDGE_NAME = "Mirage";
     private static final String BAR_COLOR = "#040208";
+    private static final int FILE_CHOOSER_REQUEST = 1001;
 
     private WebView webView;
+    private ValueCallback<Uri[]> pendingFileCallback;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -91,9 +94,9 @@ public class MainActivity extends Activity {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
-        settings.setMediaPlaybackRequiresUserGesture(true);
+        settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setAllowFileAccess(true);
-        settings.setAllowContentAccess(false);
+        settings.setAllowContentAccess(true);
         settings.setAllowFileAccessFromFileURLs(false);
         settings.setAllowUniversalAccessFromFileURLs(false);
         settings.setLoadWithOverviewMode(true);
@@ -131,7 +134,53 @@ public class MainActivity extends Activity {
             }
         });
 
-        view.setWebChromeClient(new WebChromeClient());
+        view.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> callback,
+                                             FileChooserParams params) {
+                if (pendingFileCallback != null) {
+                    pendingFileCallback.onReceiveValue(null);
+                    pendingFileCallback = null;
+                }
+                pendingFileCallback = callback;
+                try {
+                    Intent intent = params.createIntent();
+                    startActivityForResult(intent, FILE_CHOOSER_REQUEST);
+                    return true;
+                } catch (Exception e) {
+                    pendingFileCallback = null;
+                    Toast.makeText(MainActivity.this,
+                            "Não foi possível abrir o seletor de imagens.", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FILE_CHOOSER_REQUEST) {
+            if (pendingFileCallback == null) {
+                super.onActivityResult(requestCode, resultCode, data);
+                return;
+            }
+            Uri[] result = null;
+            if (resultCode == RESULT_OK && data != null) {
+                if (data.getClipData() != null) {
+                    int count = data.getClipData().getItemCount();
+                    result = new Uri[count];
+                    for (int i = 0; i < count; i++) {
+                        result[i] = data.getClipData().getItemAt(i).getUri();
+                    }
+                } else if (data.getData() != null) {
+                    result = new Uri[]{data.getData()};
+                }
+            }
+            pendingFileCallback.onReceiveValue(result);
+            pendingFileCallback = null;
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private boolean handleUri(Uri uri) {
